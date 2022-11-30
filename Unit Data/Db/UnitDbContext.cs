@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Unit_Data.Models;
+using Unit_Data.Models.Models;
 
 namespace Unit_Data.Db
 {
@@ -23,6 +24,17 @@ namespace Unit_Data.Db
         }
 
 
-        public DbSet<AppUser> appUsers { get; set; }
+        //public DbSet<AppUser> appUsers { get; set; }
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<AppUserVM> UserVMs { get; set; }
+        public DbSet<MessageUserVM> MessageUserVMs { get; set; }
+        public DbSet<Chat> Chats { get; set; }
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Category> Categorys { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<AppUserContact> AppUserContacts { get; set; }
+        //public DbSet<AppUserAppUserContact> AppUserAppUserContact { get; set; }
     }
 }
