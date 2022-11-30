@@ -68,3 +68,9 @@ C:\Users\user\source\repos\Project Unit\Project Unit\bin\Debug\net6.0\runtimes\w
 C:\Users\user\source\repos\Project Unit\Project Unit\bin\Debug\net6.0\Microsoft.Extensions.Configuration.dll
 C:\Users\user\source\repos\Project Unit\Project Unit\bin\Debug\net6.0\Humanizer.dll
 C:\Users\user\source\repos\Project Unit\Project Unit\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\user\source\repos\Project Unit\Project Unit\bin\Debug\net6.0\AutoMapper.dll
+C:\Users\user\source\repos\Project Unit\Project Unit\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\user\source\repos\Project Unit\Project Unit\bin\Debug\net6.0\Unit Services.dll
+C:\Users\user\source\repos\Project Unit\Project Unit\bin\Debug\net6.0\Unit Services.pdb
+C:\Users\user\source\repos\Project Unit\Project Unit\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\user\source\repos\Project Unit\Project Unit\bin\Debug\net6.0\FluentValidation.dll
