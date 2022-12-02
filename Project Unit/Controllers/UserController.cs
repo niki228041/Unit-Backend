@@ -131,8 +131,22 @@ namespace Project_Unit.Controllers
             {
                 return Ok(result);
             }
+
             return BadRequest(result);
         }
+
+        
+        [HttpPost("GetUserById"), AllowAnonymous]
+        public async Task<IActionResult> GetUserById(GetUserByIdVM model)
+        {
+            var result = await _userService.GetUserById(model);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
 
 
     }

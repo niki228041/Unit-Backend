@@ -7,10 +7,10 @@ using Unit_Data.Models.Models;
 
 namespace Unit_Data.Models
 {
-    public class MessageResponse
+    public class MessageVM
     {
-        public Message message { get; set; }
-        public string userId { get; set; }
-        public string userName { get; set; }
+        public int UserId { get; set; }
+        public string Text { get; set; }
+        public DateTime Created { get; set; }
     }
 }

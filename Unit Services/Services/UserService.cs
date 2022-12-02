@@ -84,20 +84,20 @@ namespace Unit_Services.Services
         public async Task<ServiceResponse> GetAllUsersAsync()
         {
             var result = _userRepository.GetAllUsersAsync();
+            List<GetUserAsContactsVM> newList = new List<GetUserAsContactsVM>();
+
+            foreach (var user in result)
+            {
+                newList.Add(new GetUserAsContactsVM { Id=user.Id,Email=user.Email,Username=user.UserName});
+            }
 
             if (result.Count != 0)
             {
-                string arr = "";
-                for (int i = 0; i < result.Count; i++)
-                {
-                    //arr+=result[i].UserName + "|";
-                    arr += result[i].Id + "|";
-                }
 
                 return new ServiceResponse
                 {
                     Success = true,
-                    Message = arr
+                    Contacts = newList,
                 };
             }
             return new ServiceResponse
@@ -221,6 +221,27 @@ namespace Unit_Services.Services
             {
                 Success = false,
                 Message = "DONT Gotcha contacts by user",
+                Contacts = null,
+            };
+        }
+
+        public async Task<ServiceResponse> GetUserById(GetUserByIdVM model)
+        {
+            var result = await _userRepository.GetUserById(model);
+
+            if (result != null)
+            {
+                return new ServiceResponse
+                {
+                    Success = true,
+                    Message = "Gotcha user",
+                    SingleUser = result,
+                };
+            }
+            return new ServiceResponse
+            {
+                Success = false,
+                Message = "DONT Gotcha user",
             };
         }
     }
