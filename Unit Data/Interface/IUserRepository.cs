@@ -30,7 +30,6 @@ namespace Unit_Data.Interface
         public Task<bool> AddMessageAsync(AddMessageVM model);
         public Task<bool> AddContactToUserAsync(AppUserContactVM model);
         public Task<List<GetUserAsContactsVM>> GetContactsByUserAsync(GetContactsByUserVM model);
-
-
+        public Task<SendFindedUserVM> GetUserById(GetUserByIdVM model);
     }
 }

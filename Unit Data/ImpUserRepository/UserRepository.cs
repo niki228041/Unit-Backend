@@ -260,7 +260,9 @@ namespace Unit_Data.ImpUserRepository
 
                     if (myMessageVm != null && model.ChatId == myMessageVm.ChatId)
                     {
-                        result_messages.Add(new MessageResponse {message=message,userId= myMessageVm.UserId });
+                        var user_tmp = await _userManager.FindByIdAsync(myMessageVm.UserId);
+                        if(user_tmp!=null)
+                            result_messages.Add(new MessageResponse {message=message,userId= myMessageVm.UserId, userName= user_tmp.UserName });
                     }
                 }
 
@@ -320,6 +322,10 @@ namespace Unit_Data.ImpUserRepository
             {
                 using (var _context = new UnitDbContext())
                 {
+                    var appUserContacts = _context.AppUserContacts;
+                    bool canBeCreated = true;
+
+
                     var user = await _userManager.FindByIdAsync(model.userId);
                     var contact = await _userManager.FindByIdAsync(model.contactId);
 
@@ -329,7 +335,20 @@ namespace Unit_Data.ImpUserRepository
                         ContactId = contact.Id,
                     };
 
-                    await _context.AppUserContacts.AddAsync(newContactReleicheschip);
+                    foreach(var userContact in appUserContacts)
+                    {
+                        if(user.Id == userContact.UserId && contact.Id == userContact.ContactId)
+                        {
+                            canBeCreated = false;
+                            return false;
+                        }
+                    }
+                    
+                    if(canBeCreated)
+                    {
+                        await _context.AppUserContacts.AddAsync(newContactReleicheschip);
+                    }
+
                     await _context.SaveChangesAsync();
                 }
                 return true;
@@ -344,6 +363,7 @@ namespace Unit_Data.ImpUserRepository
         public async Task<List<GetUserAsContactsVM>> GetContactsByUserAsync(GetContactsByUserVM model)
         {
             List<GetUserAsContactsVM> list = new List<GetUserAsContactsVM>();
+
             try
             {
                 using (var _context = new UnitDbContext())
@@ -364,7 +384,7 @@ namespace Unit_Data.ImpUserRepository
                                     Email = user_tmp.Email,
                                     Username = user_tmp.UserName
                                 }
-                                );
+                            );
                         }
                     }
 
@@ -377,6 +397,14 @@ namespace Unit_Data.ImpUserRepository
             {
                 return null;
             }
+        }
+
+
+        public async Task<SendFindedUserVM> GetUserById(GetUserByIdVM model)
+        {
+            var user = await _userManager.FindByIdAsync(model.UserId);
+
+            return new SendFindedUserVM { username = user.UserName };
         }
 
     }

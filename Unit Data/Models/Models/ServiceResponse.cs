@@ -16,6 +16,6 @@ namespace Unit_Data.Models.Models
         public IEnumerable<Chat> Chats { get; set; }
         public IEnumerable<MessageResponse> Messages { get; set; }
         public IEnumerable<GetUserAsContactsVM> Contacts { get; set; }
-        
+        public SendFindedUserVM SingleUser {get;set;}
     }
 }
