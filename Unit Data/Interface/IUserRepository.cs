@@ -31,5 +31,8 @@ namespace Unit_Data.Interface
         public Task<bool> AddContactToUserAsync(AppUserContactVM model);
         public Task<List<GetUserAsContactsVM>> GetContactsByUserAsync(GetContactsByUserVM model);
         public Task<SendFindedUserVM> GetUserById(GetUserByIdVM model);
+        public string UploadImage(UploadImageVM model); 
+        public Task<bool> UploadAvatarAsync(UploadAvatarVM model);
+        public Task<string> GetAvatar(GetUserByIdVM model);
     }
 }

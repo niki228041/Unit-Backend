@@ -271,6 +271,30 @@ namespace Unit_Data.Migrations
                     b.ToTable("AppUserContacts");
                 });
 
+            modelBuilder.Entity("Unit_Data.Models.Models.AvatarImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ImageName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("AvatarImages");
+                });
+
             modelBuilder.Entity("Unit_Data.Models.Models.Category", b =>
                 {
                     b.Property<int>("Id")
@@ -595,6 +619,17 @@ namespace Unit_Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Unit_Data.Models.Models.AvatarImage", b =>
+                {
+                    b.HasOne("Unit_Data.Models.Models.AppUser", "User")
+                        .WithOne("Avatar")
+                        .HasForeignKey("Unit_Data.Models.Models.AvatarImage", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Unit_Data.Models.Models.Chat", b =>
                 {
                     b.HasOne("Unit_Data.Models.Models.AppUser", null)
@@ -673,6 +708,9 @@ namespace Unit_Data.Migrations
 
             modelBuilder.Entity("Unit_Data.Models.Models.AppUser", b =>
                 {
+                    b.Navigation("Avatar")
+                        .IsRequired();
+
                     b.Navigation("Chats");
 
                     b.Navigation("ContactUsers");
