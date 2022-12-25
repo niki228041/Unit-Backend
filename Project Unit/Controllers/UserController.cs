@@ -147,6 +147,38 @@ namespace Project_Unit.Controllers
             return BadRequest(result);
         }
 
+        [HttpPost("UploadImage"), AllowAnonymous]
+        public async Task<IActionResult> UploadImage(UploadImageVM model)
+        {
+            var result = await _userService.UploadImage(model);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpPost("UploadAvatar"), AllowAnonymous]
+        public async Task<IActionResult> UploadAvatar(UploadAvatarVM model)
+        {
+            var result = await _userService.UploadAvatar(model);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpPost("GetAvatar"), AllowAnonymous]
+        public async Task<IActionResult> GetAvatar(GetUserByIdVM model)
+        {
+            var result = await _userService.GetAvatar(model);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
 
 
     }

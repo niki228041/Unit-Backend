@@ -35,6 +35,7 @@ namespace Unit_Data.Db
         public DbSet<Category> Categorys { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<AppUserContact> AppUserContacts { get; set; }
+        public DbSet<AvatarImage> AvatarImages { get; set; }
         //public DbSet<AppUserAppUserContact> AppUserAppUserContact { get; set; }
     }
 }

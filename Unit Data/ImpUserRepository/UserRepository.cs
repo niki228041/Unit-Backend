@@ -18,6 +18,9 @@ using Unit_Data.Db;
 using System.Data;
 using System.Collections;
 using Microsoft.EntityFrameworkCore;
+using System.IO;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace Unit_Data.ImpUserRepository
 {
@@ -406,6 +409,158 @@ namespace Unit_Data.ImpUserRepository
 
             return new SendFindedUserVM { username = user.UserName };
         }
+
+        public string UploadImage(UploadImageVM model)
+        {
+            string randomFileName = Path.GetRandomFileName() + ".jpeg";
+
+            try
+            {
+                byte[] byteBuffer = Convert.FromBase64String(model.data);
+
+                Image img;
+
+                using (MemoryStream memoryStream = new MemoryStream(byteBuffer))
+                {
+                    memoryStream.Position = 0;
+                    img = Image.FromStream(memoryStream);
+
+
+                    var dir = Path.Combine(Directory.GetCurrentDirectory(), "uploads", randomFileName);
+                    img.Save(dir, ImageFormat.Jpeg);
+
+                    memoryStream.Close();
+                    byteBuffer = null;
+                }
+
+                return randomFileName;
+            }
+            catch
+            {
+                return null;
+            }
+            return null;
+        }
+
+        public string ReadImage(string imgName)
+        {
+
+            try
+            {
+                var dir = Path.Combine(Directory.GetCurrentDirectory(), "uploads", imgName);
+
+                var bytesOfImage = File.ReadAllBytes(dir);
+
+                var stringBytes = Convert.ToBase64String(bytesOfImage);
+
+                return stringBytes;
+            }
+            catch
+            {
+                return null;
+            }
+            return null;
+        }
+
+        public async Task<bool> UploadAvatarAsync(UploadAvatarVM model)
+        {
+
+            try
+            {
+                var user = await GetUserByIdAsync(model.UserId);
+                
+                if (user != null)
+                {
+                    string imgName = UploadImage(model.image);
+
+                    using(var db = new UnitDbContext())
+                    {
+                        var avatars = db.AvatarImages.ToList();
+                        var userIndex = avatars.FindIndex(a => a.UserId == user.Id);
+
+                        if (userIndex == -1)
+                        {
+                            var imgToDb = new AvatarImage() { ImageName = imgName, UserId = user.Id };
+
+                            await db.AvatarImages.AddAsync(imgToDb);
+                            await db.SaveChangesAsync();
+                        }
+                        else
+                        {
+                            var oldAvatar = avatars[userIndex];
+                            oldAvatar.ImageName = imgName;
+
+                            db.AvatarImages.Update(oldAvatar);
+                            await db.SaveChangesAsync();
+                        }
+                    }
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+
+            return false;
+        }
+
+        public async Task<string> GetAvatar(GetUserByIdVM model)
+        {
+            try
+            {
+                var user = await GetUserByIdAsync(model.UserId);
+
+                if (user != null)
+                {
+                    using(var db = new UnitDbContext())
+                    {
+                        var user_ava = db.AvatarImages.ToList().Find(ava=>ava.UserId == user.Id);
+                        if (user_ava != null)
+                        {
+                            var stringBytes = ReadImage(user_ava.ImageName);
+                            return stringBytes;
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                return null;
+            }
+            return null;
+        }
+
+
+
+        //public async Task UploadImage(formFile)
+        //{
+
+        //    using (var memoryStream = new MemoryStream())
+        //    {
+        //        await formFile.CopyToAsync(memoryStream);
+        //        // Upload the file if less than 2 MB
+        //        if (memoryStream.Length < 2097152)
+        //        {
+        //            //based on the upload file to create Photo instance.
+        //            //You can also check the database, whether the image exists in the database.
+        //            var newphoto = new Photo()
+        //            {
+        //                Bytes = memoryStream.ToArray(),
+        //                Description = formFile.FileName,
+        //                FileExtension = Path.GetExtension(formFile.FileName),
+        //                Size = formFile.Length,
+        //            };
+        //            //add the photo instance to the list.
+        //            photolist.Add(newphoto);
+        //        }
+        //        else
+        //        {
+        //            ModelState.AddModelError("File", "The file is too large.");
+        //        }
+        //    }
+
+        //}
 
     }
     public class Tokens

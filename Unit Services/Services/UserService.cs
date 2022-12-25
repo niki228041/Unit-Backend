@@ -244,5 +244,63 @@ namespace Unit_Services.Services
                 Message = "DONT Gotcha user",
             };
         }
+
+        public async Task<ServiceResponse> UploadImage(UploadImageVM model)
+        {
+            var result = _userRepository.UploadImage(model);
+
+            if (result != null)
+            {
+                return new ServiceResponse
+                {
+                    Success = true,
+                    Message = "Image was added",
+                };
+            }
+            return new ServiceResponse
+            {
+                Success = false,
+                Message = "Image wasn't added! Error!",
+            };
+        }
+
+        public async Task<ServiceResponse> UploadAvatar(UploadAvatarVM model)
+        {
+            var result = await _userRepository.UploadAvatarAsync(model);
+
+            if (result)
+            {
+                return new ServiceResponse
+                {
+                    Success = true,
+                    Message = "Image was added",
+                };
+            }
+            return new ServiceResponse
+            {
+                Success = false,
+                Message = "Image wasn't added! Error!",
+            };
+        }
+
+        public async Task<ServiceResponse> GetAvatar(GetUserByIdVM model)
+        {
+            var result = await _userRepository.GetAvatar(model);
+
+            if (result != null)
+            {
+                return new ServiceResponse
+                {
+                    Success = true,
+                    Message = result,
+                };
+            }
+            return new ServiceResponse
+            {
+                Success = false,
+                Message = "Image wasn't founded!",
+            };
+        }
+
     }
 }

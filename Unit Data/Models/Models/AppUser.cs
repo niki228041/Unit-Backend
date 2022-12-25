@@ -15,6 +15,7 @@ namespace Unit_Data.Models.Models
         public IList<Chat> Chats { get; set; }
         public IList<Order> Orders { get; set; }
         public List<AppUserContact> ContactUsers { get; set; }
+        public AvatarImage Avatar { get; set; }
         public DateTime Birthday { get; set; }
     }
 }
